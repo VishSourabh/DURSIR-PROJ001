@@ -1,0 +1,55 @@
+create or replace PROCEDURE PROCEDURE_TEST 
+AS 
+CURSOR CURSOR_NAME IS SELECT * FROM CUSTOMER_MASTER WHERE CUST_ID < 1010;
+P_NUMBER_TMP VARCHAR2(500);
+BEGIN
+ 
+
+  FOR LOOP_NAME IN CURSOR_NAME
+  LOOP
+   
+    IF (LOOP_NAME.CUST_NAME != NULL OR LOOP_NAME.CUST_NAME != '''') AND
+       (LOOP_NAME.AGE != NULL  OR LOOP_NAME.AGE >= 18 AND LOOP_NAME.AGE <=120) AND
+       (LOOP_NAME.BIRTH_DATE != NULL OR LOOP_NAME.BIRTH_DATE != '''' ) AND
+       (LOOP_NAME.PREMIUM_AMOUNT != NULL OR   LOOP_NAME.PREMIUM_AMOUNT > 0 )AND 
+       (LOOP_NAME.RECEIPT_DATE != NULL OR LOOP_NAME.RECEIPT_DATE !=''''  )
+    THEN
+      DBMS_OUTPUT.PUT_LINE('OUTER IF');
+        INSERT INTO CUSTOMER_MASTER_VALID_DATA SELECT * FROM CUSTOMER_MASTER WHERE CUST_ID = LOOP_NAME.CUST_ID;
+            FOR LOOP_NAME_INNER IN (SELECT * FROM receipt_statement WHERE customer_id = LOOP_NAME.CUST_ID)
+            LOOP
+                DBMS_OUTPUT.PUT_LINE(LOOP_NAME_INNER.customer_id ||' ----3-----' || LOOP_NAME_INNER.policy_no);
+                 IF (LOOP_NAME_INNER.POLICY_NAME != NULL OR LOOP_NAME_INNER.POLICY_NAME !='''' ) AND
+                    (LOOP_NAME_INNER.RECEIPT_DATE != NULL OR LOOP_NAME_INNER.RECEIPT_DATE !='''' ) AND 
+                    (LOOP_NAME_INNER.CHEQUE_NO != NULL OR LOOP_NAME_INNER.CHEQUE_NO !='''' )  AND
+                    (LOOP_NAME_INNER.TOTAL_PREMIUM != NULL OR LOOP_NAME_INNER.TOTAL_PREMIUM > 0 ) AND 
+                    (LOOP_NAME_INNER.RECEIPT_NO != NULL OR LOOP_NAME_INNER.RECEIPT_NO != '''')
+                 THEN
+                    DBMS_OUTPUT.PUT_LINE('INNER IF');
+                    INSERT INTO RECEIPT_STATEMENT_VALID_DATA SELECT * FROM RECEIPT_STATEMENT WHERE policy_no = LOOP_NAME_INNER.policy_no;
+                    
+                    ----------------------------------------------------------------------
+                   -- P_NUMBER_TMP := P_NUMBER_TMP || ','|| LOOP_NAME_INNER.policy_no;
+                   select listagg(POLICY_NO ,  ','  )  within group (order by POLICY_NO) into P_NUMBER_TMP  from RECEIPT_STATEMENT WHERE CUSTOMER_ID=LOOP_NAME.CUST_ID group by CUSTOMER_ID order by CUSTOMER_ID;
+                 DBMS_OUTPUT.PUT_LINE(P_NUMBER_TMP);
+                    
+                    ----------------------------------------------------------------------
+                 ELSE
+                    DBMS_OUTPUT.PUT_LINE('INNER ELSE');
+                    INSERT INTO RECEIPT_STATEMENT_INVALID_DATA SELECT * FROM RECEIPT_STATEMENT WHERE policy_no = LOOP_NAME_INNER.policy_no;
+                 END IF;
+            END LOOP LOOP_NAME_INNER;
+            INSERT INTO CUSTOMER_MASTER_DATA VALUES ('P-ID-'||(SEQ_ID.nextval),LOOP_NAME.CUST_ID,P_NUMBER_TMP,'PROCESSED',SYSDATE);
+   ELSE
+     DBMS_OUTPUT.PUT_LINE('OUTER ELSE');
+     INSERT INTO CUSTOMER_MASTER_INVALID_DATA SELECT * FROM CUSTOMER_MASTER WHERE CUST_ID = LOOP_NAME.CUST_ID;
+    END IF; 
+ END LOOP LOOP_NAME;
+ 
+ EXCEPTION 
+   WHEN others THEN 
+    
+      INSERT INTO EXCEPTION_ERROR_TABLE VALUES (SEQ_ID.nextval,-20002,'An error occurred',SYSDATE);
+     --raise_application_error (-20002,'An error occurred.');
+  
+END PROCEDURE_TEST;

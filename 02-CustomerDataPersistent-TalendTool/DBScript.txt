@@ -1,0 +1,106 @@
+TASKLIST_Saurabh
+
+--------------------------------------------------------
+--  DDL for Table CUSTOMER_MASTER
+--------------------------------------------------------
+
+  CREATE TABLE CUSTOMER_MASTER 
+   (	"CUST_ID" VARCHAR2(50), 
+	"INITIALS" VARCHAR2(10), 
+	"CUST_NAME" VARCHAR2(255), 
+	"ADDRESS1" VARCHAR2(500), 
+	"ADDRESS2" VARCHAR2(500), 
+	"ADDRESS3" VARCHAR2(255), 	
+	"CITY" VARCHAR2(255), 
+	"STATE" VARCHAR2(255), 
+	"COUNTRY" VARCHAR2(50), 
+	"PIN_NO" VARCHAR2(255), 
+	"MOBILE_NUMBER" VARCHAR2(255), 
+	"EMAIL_ID" VARCHAR2(4000), 
+	"PAN" VARCHAR2(50), 
+	"GENDER" VARCHAR2(10), 
+	"BIRTH_DATE" DATE, 
+	"AGE" VARCHAR2(200), 
+	"CUST_TYPE" VARCHAR2(30), 
+	"KYC_STATUS" VARCHAR2(50), 
+	"DELIVERY_CHANNEL" VARCHAR2(30), 
+	"RECORD_INSERT_DATE" DATE, 
+	"PROCESSED_FLAG" VARCHAR2(5), 
+	"PROCESSED_DATE" DATE, 
+	"CHEQUE_NO" VARCHAR2(255), 
+	"EFFECT_DATE" VARCHAR2(255), 
+	"POL_NUM_TXT" VARCHAR2(200), 
+	"REG_NO" VARCHAR2(100), 
+	"ENGINE_NO" VARCHAR2(100), 
+	"CHASSIS_NO" VARCHAR2(100), 
+	"COVERNOTE_NO" VARCHAR2(200), 
+	"PROPOSAL_NO" VARCHAR2(20), 
+	"ENDORSEMENT_EFF_DATE" DATE, 
+	"DOC_ID" NUMBER, 
+	"VENDOR_PRIORITY" NUMBER(20,0), 
+	"VENDOR_NAME" VARCHAR2(50), 
+	"TELEPHONE_NO" VARCHAR2(50), 
+	"NOMINEE_NAME" VARCHAR2(255), 
+	"RELATIONSHIP" VARCHAR2(255), 
+	"POLICY_NO" VARCHAR2(255), 
+	"E_POLICY_NO" VARCHAR2(255), 
+	"ISSUED_DATE" DATE, 
+	"MAKER" VARCHAR2(255), 
+	"MODEL_NO" VARCHAR2(255), 
+	"BODY_TYPE" VARCHAR2(255), 
+	"MANUFACTURE_YEAR" VARCHAR2(255), 
+	"SEATING_CAPACITY" VARCHAR2(255), 
+	"PREMIUM_AMOUNT" VARCHAR2(255), 
+	"RECEIPT_DATE" VARCHAR2(255) 
+   ) ;
+
+
+--create above table
+Write a java program which generate 10000 sample record   ### separated data for above table in txt file.
+
+
+
+Find a free ETL Tool that read the same txt file and load this data to table.
+
+class CustomerData{
+private String Initial;
+private String custName;
+private String addrs1;
+private String addrs2;
+private String addrs3;
+private String city;
+private String state;
+private String country;
+private int pinNo;
+private long mobNo;
+private String emailId;
+private String panNo;
+private String gender;
+private Date dob;
+private int age;
+private String cust_type;
+private String    KYC_status                                                                                                                                                                                                                       private String     DELIVERY_CHANNEL   //emaol,print
+private String   RECORD_INSERT_DATE 
+private String  PROCESSED_FLAG  
+private String        PROCESSED_DATE                                                                                                                                                                                                       private String          CHEQUE_NO                                             
+}
+
+
+ 
+table space create-temp |main |undo tablespace
+create new oracle user 
+assign  dba permission
+
+-Ets(For date prop, ) for less code need
+
+
+
+
+
+
+
+
+
+
+
+
